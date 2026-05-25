@@ -304,10 +304,10 @@
         }
 
         .line.active {
-            stroke-width: 2.2;
+            stroke-width: 1.2;
             opacity: 1;
             stroke: #22d3ee;
-            filter: drop-shadow(0 0 6px #22d3eeaa);
+            filter: drop-shadow(0 0 3px #22d3ee99);
         }
 
         .d1 {
@@ -339,7 +339,7 @@
 
         .line {
             stroke: #22d3ee99;
-            stroke-width: 1.5;
+            stroke-width: 1;
             opacity: .7;
         }
 
@@ -615,15 +615,6 @@
         }
 
         function renderTopology() {
-            const coreX = 50;
-            const coreY = 50;
-
-            const lines = nodes.slice(0, 5).map((node, index) => {
-                const slot = dotSlots[index] || dotSlots[0];
-                const active = selectedNodeId === node.nodeId;
-                return `<line class="line ${active ? "active" : ""}" x1="${slot.x}%" y1="${slot.y}%" x2="${coreX}%" y2="${coreY}%"></line>`;
-            }).join("");
-
             const dots = nodes.slice(0, 5).map((node, index) => {
                 const slot = dotSlots[index] || dotSlots[0];
                 const online = node.status === "online";
@@ -640,7 +631,36 @@
                 `;
             }).join("");
 
-            topologyDots.innerHTML = `<svg class="topology-lines" viewBox="0 0 100 100" preserveAspectRatio="none">${lines}</svg>${dots}`;
+            topologyDots.innerHTML = `<svg class="topology-lines" preserveAspectRatio="none"></svg>${dots}`;
+            drawTopologyLines();
+        }
+
+        function drawTopologyLines() {
+            const topology = document.querySelector(".topology");
+            const core = topology?.querySelector(".core");
+            const svg = topologyDots.querySelector(".topology-lines");
+            const dotEls = topologyDots.querySelectorAll(".dot[data-node-id]");
+            if (!topology || !core || !svg) return;
+
+            const containerRect = topology.getBoundingClientRect();
+            const coreRect = core.getBoundingClientRect();
+            const coreCx = coreRect.left - containerRect.left + (coreRect.width / 2);
+            const coreCy = coreRect.top - containerRect.top + (coreRect.height / 2);
+
+            svg.setAttribute("viewBox", `0 0 ${containerRect.width} ${containerRect.height}`);
+            svg.setAttribute("width", `${containerRect.width}`);
+            svg.setAttribute("height", `${containerRect.height}`);
+
+            const lines = Array.from(dotEls).map((dotEl) => {
+                const nodeId = dotEl.dataset.nodeId;
+                const dotRect = dotEl.getBoundingClientRect();
+                const dotCx = dotRect.left - containerRect.left + (dotRect.width / 2);
+                const dotCy = dotRect.top - containerRect.top + (dotRect.height / 2);
+                const active = selectedNodeId === nodeId ? "active" : "";
+                return `<line class="line ${active}" x1="${dotCx}" y1="${dotCy}" x2="${coreCx}" y2="${coreCy}"></line>`;
+            }).join("");
+
+            svg.innerHTML = lines;
         }
 
         function renderChart() {
@@ -776,6 +796,10 @@
                 } catch (error) {
                     console.error("Error al guardar nombre", error);
                 }
+            });
+
+            window.addEventListener("resize", () => {
+                drawTopologyLines();
             });
         }
 
