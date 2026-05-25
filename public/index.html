@@ -304,10 +304,10 @@
         }
 
         .line.active {
-            height: 2px;
+            stroke-width: 2.2;
             opacity: 1;
-            background: linear-gradient(90deg, transparent, #22d3ee, #22d3ee, transparent);
-            box-shadow: 0 0 14px #22d3eeaa;
+            stroke: #22d3ee;
+            filter: drop-shadow(0 0 6px #22d3eeaa);
         }
 
         .d1 {
@@ -338,11 +338,18 @@
         }
 
         .line {
-            position: absolute;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #22d3ee99, transparent);
-            transform-origin: left;
+            stroke: #22d3ee99;
+            stroke-width: 1.5;
             opacity: .7;
+        }
+
+        .topology-lines {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
         .chart {
@@ -613,12 +620,8 @@
 
             const lines = nodes.slice(0, 5).map((node, index) => {
                 const slot = dotSlots[index] || dotSlots[0];
-                const dx = coreX - slot.x;
-                const dy = coreY - slot.y;
-                const length = Math.sqrt(dx * dx + dy * dy);
-                const angle = Math.atan2(dy, dx) * (180 / Math.PI);
                 const active = selectedNodeId === node.nodeId;
-                return `<div class="line ${active ? "active" : ""}" style="left:${slot.x}%; top:${slot.y}%; width:${length}%; transform: rotate(${angle}deg);"></div>`;
+                return `<line class="line ${active ? "active" : ""}" x1="${slot.x}%" y1="${slot.y}%" x2="${coreX}%" y2="${coreY}%"></line>`;
             }).join("");
 
             const dots = nodes.slice(0, 5).map((node, index) => {
@@ -637,7 +640,7 @@
                 `;
             }).join("");
 
-            topologyDots.innerHTML = lines + dots;
+            topologyDots.innerHTML = `<svg class="topology-lines" viewBox="0 0 100 100" preserveAspectRatio="none">${lines}</svg>${dots}`;
         }
 
         function renderChart() {
