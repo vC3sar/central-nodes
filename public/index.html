@@ -8,19 +8,18 @@
 
     <style>
         :root {
-            --bg: #070b14;
-            --panel: #0d1424;
-            --panel-2: #111a2d;
-            --border: #1f3150;
-            --border-glow: #2f80ff66;
-            --text: #dbeafe;
-            --muted: #7f8da8;
-            --cyan: #22d3ee;
-            --blue: #3b82f6;
-            --green: #22c55e;
-            --yellow: #eab308;
-            --red: #ef4444;
-            --purple: #8b5cf6;
+            --bg-0: #eef3fb;
+            --bg-1: #dfe8f5;
+            --glass: rgba(255, 255, 255, 0.52);
+            --glass-strong: rgba(255, 255, 255, 0.68);
+            --border: rgba(255, 255, 255, 0.72);
+            --text: #0f172a;
+            --muted: #5b6678;
+            --line: #c7d2e5;
+            --accent: #2563eb;
+            --ok: #16a34a;
+            --warn: #ca8a04;
+            --bad: #dc2626;
         }
 
         * {
@@ -31,11 +30,11 @@
             margin: 0;
             height: 100vh;
             background:
-                radial-gradient(circle at 50% 20%, #12385f55, transparent 35%),
-                radial-gradient(circle at 80% 80%, #30145c55, transparent 25%),
-            linear-gradient(180deg, #050812, #080d18);
+                radial-gradient(circle at 20% 0%, #ffffffaa, transparent 35%),
+                radial-gradient(circle at 100% 100%, #d7e3f6, transparent 34%),
+                linear-gradient(180deg, var(--bg-0), var(--bg-1));
             color: var(--text);
-            font-family: Inter, Segoe UI, Arial, sans-serif;
+            font-family: "SF Pro Display", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
             overflow: hidden;
         }
 
@@ -44,20 +43,20 @@
             position: fixed;
             inset: 0;
             background-image:
-                linear-gradient(#ffffff05 1px, transparent 1px),
-                linear-gradient(90deg, #ffffff05 1px, transparent 1px);
-            background-size: 32px 32px;
+                linear-gradient(#ffffff33 1px, transparent 1px),
+                linear-gradient(90deg, #ffffff33 1px, transparent 1px);
+            background-size: 42px 42px;
             pointer-events: none;
         }
 
         .app {
-            width: min(1500px, 100%);
+            width: min(1600px, 100%);
             height: 100vh;
             margin: auto;
-            padding: 16px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 20px;
         }
 
         .topbar {
@@ -65,10 +64,12 @@
             align-items: center;
             justify-content: space-between;
             border: 1px solid var(--border);
-            background: linear-gradient(180deg, #111a2d, #0a101d);
-            box-shadow: 0 0 35px #2563eb25;
-            padding: 16px 20px;
-            border-radius: 10px;
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(130%);
+            -webkit-backdrop-filter: blur(20px) saturate(130%);
+            box-shadow: 0 14px 40px rgba(15, 23, 42, 0.09);
+            padding: 18px 22px;
+            border-radius: 18px;
         }
 
         .brand {
@@ -78,44 +79,44 @@
         }
 
         .logo {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            background: radial-gradient(circle, #ef4444, #3b0b16);
-            box-shadow: 0 0 22px #ef444466;
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #dce7f8, #f8fbff);
+            box-shadow: inset 0 1px 0 #fff, 0 8px 20px rgba(37, 99, 235, 0.18);
         }
 
         .brand h1 {
             margin: 0;
-            font-size: 18px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 20px;
+            letter-spacing: .3px;
+            font-weight: 650;
         }
 
         .brand span {
             display: block;
             margin-top: 3px;
             color: var(--muted);
-            font-size: 11px;
-            letter-spacing: 1px;
+            font-size: 12px;
+            letter-spacing: .2px;
         }
 
         .status-pill {
             padding: 9px 14px;
             border-radius: 999px;
-            border: 1px solid #ef444477;
-            color: #fecaca;
-            background: #450a0a66;
+            border: 1px solid #ffd9d9;
+            color: #9f1239;
+            background: #fff7f7;
             font-size: 12px;
-            font-weight: 700;
-            box-shadow: 0 0 20px #ef444433;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(159, 18, 57, 0.08);
         }
 
         .layout {
             margin-top: 0;
             display: grid;
-            grid-template-columns: 280px 1fr 310px;
-            gap: 18px;
+            grid-template-columns: 300px 1fr 320px;
+            gap: 20px;
             flex: 1;
             min-height: 0;
             overflow: hidden;
@@ -123,9 +124,11 @@
 
         .panel {
             border: 1px solid var(--border);
-            background: linear-gradient(180deg, #0f172aee, #080d18ee);
-            border-radius: 10px;
-            box-shadow: inset 0 0 30px #00000050, 0 0 25px #1d4ed820;
+            background: var(--glass);
+            backdrop-filter: blur(18px) saturate(120%);
+            -webkit-backdrop-filter: blur(18px) saturate(120%);
+            border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.1);
             overflow: hidden;
             min-height: 0;
             display: flex;
@@ -134,16 +137,16 @@
 
         .panel-header {
             padding: 16px;
-            border-bottom: 1px solid #1e293b;
-            color: #cbd5e1;
+            border-bottom: 1px solid var(--line);
+            color: #334155;
             font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1.7px;
-            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: .7px;
+            text-transform: none;
         }
 
         .panel-body {
-            padding: 16px;
+            padding: 18px;
             overflow: auto;
             min-height: 0;
         }
@@ -151,11 +154,12 @@
         .node-card,
         .alert-card,
         .service-card {
-            border: 1px solid #1e293b;
-            background: linear-gradient(180deg, #121c31, #0b1220);
+            border: 1px solid #d8e0ee;
+            background: var(--glass-strong);
             padding: 14px;
-            border-radius: 8px;
-            margin-bottom: 12px;
+            border-radius: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
         }
 
         .node-card.active {
@@ -163,9 +167,9 @@
             box-shadow: 0 0 18px #2563eb35;
         }
         .service-card.active {
-            border-color: #22d3ee;
-            box-shadow: 0 0 22px #22d3ee40;
-            background: linear-gradient(180deg, #16304d, #0b1220);
+            border-color: #b7ccf2;
+            box-shadow: 0 0 0 2px #dbeafe, 0 10px 26px rgba(37, 99, 235, 0.12);
+            background: #f8fbff;
         }
 
         .row {
@@ -176,13 +180,13 @@
         }
 
         .title {
-            font-size: 13px;
-            font-weight: 800;
+            font-size: 14px;
+            font-weight: 650;
         }
 
         .sub {
             margin-top: 4px;
-            font-size: 11px;
+            font-size: 12px;
             color: var(--muted);
         }
 
@@ -190,23 +194,23 @@
             padding: 4px 8px;
             border-radius: 999px;
             font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
+            font-weight: 650;
+            text-transform: none;
         }
 
         .safe {
-            background: #052e1a;
-            color: #86efac;
+            background: #ebf9f0;
+            color: #166534;
         }
 
         .warn {
-            background: #422006;
-            color: #fde68a;
+            background: #fff8e7;
+            color: #854d0e;
         }
 
         .fail {
-            background: #450a0a;
-            color: #fca5a5;
+            background: #fff1f2;
+            color: #9f1239;
         }
 
         .topology {
@@ -222,18 +226,19 @@
             width: 86px;
             height: 86px;
             border-radius: 50%;
-            background: radial-gradient(circle, #ef4444, #7f1d1d 55%, transparent 60%);
-            box-shadow: 0 0 50px #ef4444aa;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #d9e6fb);
+            box-shadow: inset 0 1px 0 #fff, 0 14px 28px rgba(15, 23, 42, 0.16);
             display: grid;
             place-items: center;
             font-size: 11px;
-            font-weight: 900;
+            font-weight: 700;
             z-index: 2;
+            color: #1e293b;
         }
 
         .ring {
             position: absolute;
-            border: 1px solid #ef444455;
+            border: 1px solid #c9d6eb;
             border-radius: 50%;
             animation: pulse 3s infinite;
         }
@@ -276,8 +281,8 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: var(--cyan);
-            box-shadow: 0 0 25px var(--cyan);
+            background: #3b82f6;
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
             cursor: pointer;
             z-index: 3;
         }
@@ -289,25 +294,25 @@
             transform: translateX(-50%);
             white-space: nowrap;
             font-size: 10px;
-            color: #b6c4df;
+            color: #334155;
             text-align: center;
             line-height: 1.35;
         }
 
         .dot-label .ip {
-            color: #7f8da8;
+            color: #64748b;
         }
 
         .dot.active {
-            outline: 2px solid #22d3ee;
+            outline: 2px solid #93c5fd;
             outline-offset: 4px;
         }
 
         .line.active {
             stroke-width: 1.2;
             opacity: 1;
-            stroke: #22d3ee;
-            filter: drop-shadow(0 0 3px #22d3ee99);
+            stroke: #3b82f6;
+            filter: drop-shadow(0 0 2px #93c5fd);
         }
 
         .d1 {
@@ -338,7 +343,7 @@
         }
 
         .line {
-            stroke: #22d3ee99;
+            stroke: #a6bddf;
             stroke-width: 1;
             opacity: .7;
         }
@@ -365,29 +370,29 @@
         .bar {
             flex: 1;
             border-radius: 5px 5px 0 0;
-            background: linear-gradient(180deg, #22d3ee, #0e7490);
-            box-shadow: 0 0 15px #22d3ee33;
+            background: linear-gradient(180deg, #7fb0ff, #4f7ecf);
+            box-shadow: 0 4px 12px rgba(79, 126, 207, 0.24);
         }
 
         .alert-card {
-            border-left: 4px solid var(--red);
+            border-left: 4px solid var(--bad);
         }
 
         .alert-card.warn-border {
-            border-left-color: var(--yellow);
+            border-left-color: var(--warn);
         }
 
         .log {
-            font-family: Consolas, monospace;
+            font-family: "SF Mono", Consolas, monospace;
             font-size: 11px;
-            color: #8fa7c7;
+            color: #526079;
             line-height: 1.7;
             max-height: 280px;
             overflow: auto;
         }
 
         .log b {
-            color: #f87171;
+            color: #b91c1c;
         }
 
         .timeline {
@@ -400,17 +405,89 @@
         .timeline span {
             height: 3px;
             flex: 1;
-            background: #1e40af;
-            box-shadow: 0 0 14px #3b82f6;
+            background: #8ea8cf;
+            box-shadow: 0 0 8px rgba(79, 126, 207, 0.4);
         }
 
         .timeline .point {
             width: 18px;
             height: 18px;
-            border: 3px solid #3b82f6;
+            border: 3px solid #6288c5;
             border-radius: 50%;
-            background: #0b1220;
-            box-shadow: 0 0 15px #3b82f6;
+            background: #f7fbff;
+            box-shadow: 0 0 10px rgba(79, 126, 207, 0.35);
+        }
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.72);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 16px;
+        }
+        .modal-backdrop.open {
+            display: flex;
+        }
+        .modal {
+            width: min(760px, 100%);
+            max-height: 85vh;
+            overflow: auto;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: var(--glass-strong);
+            backdrop-filter: blur(20px) saturate(135%);
+            -webkit-backdrop-filter: blur(20px) saturate(135%);
+            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18);
+        }
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--line);
+        }
+        .modal-title {
+            font-size: 14px;
+            font-weight: 800;
+        }
+        .modal-close {
+            border: 1px solid #d8e0ee;
+            color: #334155;
+            background: #f7fbff;
+            border-radius: 7px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .modal-body {
+            padding: 14px 16px 16px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+        .kv {
+            border: 1px solid #d8e0ee;
+            border-radius: 8px;
+            background: #f9fbff;
+            padding: 10px;
+        }
+        .kv .k {
+            color: #7f8da8;
+            font-size: 11px;
+        }
+        .kv .v {
+            margin-top: 5px;
+            font-size: 13px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+        @media (max-width: 700px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 1100px) {
@@ -513,6 +590,15 @@
             </aside>
         </section>
     </main>
+    <div class="modal-backdrop" id="nodeModalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="nodeModalTitle">
+            <div class="modal-head">
+                <div class="modal-title" id="nodeModalTitle">Detalle de Nodo</div>
+                <button class="modal-close" id="nodeModalClose" type="button">Cerrar</button>
+            </div>
+            <div class="modal-body" id="nodeModalBody"></div>
+        </div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const statusPill = document.getElementById("statusPill");
@@ -522,10 +608,15 @@
         const trafficChart = document.getElementById("trafficChart");
         const alertsList = document.getElementById("alertsList");
         const incidentLog = document.getElementById("incidentLog");
+        const nodeModalBackdrop = document.getElementById("nodeModalBackdrop");
+        const nodeModalClose = document.getElementById("nodeModalClose");
+        const nodeModalTitle = document.getElementById("nodeModalTitle");
+        const nodeModalBody = document.getElementById("nodeModalBody");
 
         let nodes = [];
         let logs = [];
         let selectedNodeId = null;
+        let openedNodeId = null;
 
         const dotSlots = [
             { cls: "d1", x: 25, y: 22 },
@@ -552,6 +643,65 @@
             if (mins === 1) return "hace 1 min";
             return `hace ${mins} min`;
         }
+        function fmtBytes(bytes) {
+            if (typeof bytes !== "number" || Number.isNaN(bytes)) return "-";
+            const units = ["B", "KB", "MB", "GB", "TB"];
+            let v = bytes;
+            let i = 0;
+            while (v >= 1024 && i < units.length - 1) {
+                v /= 1024;
+                i += 1;
+            }
+            return `${v.toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
+        }
+        function fmtUptime(seconds) {
+            if (typeof seconds !== "number" || Number.isNaN(seconds)) return "-";
+            const d = Math.floor(seconds / 86400);
+            const h = Math.floor((seconds % 86400) / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            if (d > 0) return `${d}d ${h}h ${m}m`;
+            return `${h}h ${m}m`;
+        }
+        function fmtTemp(temp) {
+            return typeof temp === "number" ? `${temp.toFixed(1)} °C` : "-";
+        }
+        function openNodeModal(nodeId) {
+            const node = nodes.find((n) => n.nodeId === nodeId);
+            if (!node) return;
+            openedNodeId = nodeId;
+            nodeModalTitle.textContent = `Detalle Técnico: ${node.name || node.nodeId}`;
+            const wifiSsid = node.wifi?.ssid || "-";
+            const wifiIp = node.wifi?.ip || node.localIp || node.ip || "-";
+            const rows = [
+                ["Estado", node.status || "-"],
+                ["Último reporte", timeSince(node.lastSeen)],
+                ["Node ID", node.nodeId || "-"],
+                ["IP", node.localIp || node.ip || "-"],
+                ["Modelo", node.model || "-"],
+                ["Android", node.android || "-"],
+                ["Batería", typeof node.battery === "number" ? `${node.battery}%` : "-"],
+                ["Cargando", typeof node.charging === "boolean" ? (node.charging ? "Sí" : "No") : "-"],
+                ["Temperatura", fmtTemp(node.temperature)],
+                ["CPU Load", typeof node.cpuLoad === "number" ? `${Math.round(node.cpuLoad)}%` : "-"],
+                ["RAM usada", fmtBytes(node.ramUsed)],
+                ["RAM total", fmtBytes(node.ramTotal)],
+                ["Uptime", fmtUptime(node.uptime)],
+                ["WiFi SSID", wifiSsid],
+                ["WiFi IP", wifiIp],
+                ["Servicios", Array.isArray(node.services) ? `${node.services.length}` : "0"],
+            ];
+            nodeModalBody.innerHTML = rows.map(([k, v]) => `
+                <div class="kv">
+                    <div class="k">${esc(k)}</div>
+                    <div class="v">${esc(v)}</div>
+                </div>
+            `).join("");
+            nodeModalBackdrop.classList.add("open");
+        }
+        function closeNodeModal() {
+            openedNodeId = null;
+            nodeModalBackdrop.classList.remove("open");
+        }
 
         function renderServices() {
             const cards = nodes.map((node) => {
@@ -570,8 +720,8 @@
                             <span class="badge ${badgeClass}">${badgeText}</span>
                         </div>
                         <div class="row" style="margin-top:8px;">
-                            <input type="text" data-role="name-input" data-node-id="${esc(node.nodeId)}" value="${esc(node.name || node.nodeId)}" style="width:100%; background:#0b1220; color:#dbeafe; border:1px solid #1e293b; border-radius:6px; padding:6px 8px; font-size:11px;">
-                            <button data-role="save-name" data-node-id="${esc(node.nodeId)}" style="background:#0c4a6e; color:#dbeafe; border:1px solid #0369a1; border-radius:6px; padding:6px 8px; font-size:11px; cursor:pointer;">Guardar</button>
+                            <input type="text" data-role="name-input" data-node-id="${esc(node.nodeId)}" value="${esc(node.name || node.nodeId)}" style="width:100%; background:#f8fbff; color:#0f172a; border:1px solid #d5dfef; border-radius:10px; padding:7px 10px; font-size:12px;">
+                            <button data-role="save-name" data-node-id="${esc(node.nodeId)}" style="background:#f3f8ff; color:#1e3a8a; border:1px solid #bed2f3; border-radius:10px; padding:7px 10px; font-size:12px; cursor:pointer;">Guardar</button>
                         </div>
                     </div>
                 `;
@@ -587,9 +737,13 @@
                 ? Math.round(online.reduce((acc, n) => acc + (Number(n.cpuLoad) || 0), 0) / online.length)
                 : 0;
             const lowBattery = nodes.filter((n) => typeof n.battery === "number" && n.battery < 20).length;
+            const staleNodes = nodes.filter((n) => (Date.now() - Number(n.lastSeen || 0)) > 30_000).length;
+            const hotNodes = nodes.filter((n) => typeof n.temperature === "number" && n.temperature >= 42).length;
 
             const cpuStatus = avgCpu > 85 ? "warn" : "safe";
             const batteryStatus = lowBattery > 0 ? "warn" : "safe";
+            const heartbeatStatus = staleNodes > 0 ? "warn" : "safe";
+            const thermalStatus = hotNodes > 0 ? "warn" : "safe";
 
             const healthEl = document.getElementById("healthChecks");
             healthEl.innerHTML = `
@@ -609,6 +763,24 @@
                             <div class="sub">${lowBattery} nodo(s) bajo 20%</div>
                         </div>
                         <span class="badge ${batteryStatus}">${batteryStatus === "safe" ? "Safe" : "Warn"}</span>
+                    </div>
+                </div>
+                <div class="node-card">
+                    <div class="row">
+                        <div>
+                            <div class="title">Heartbeat Freshness</div>
+                            <div class="sub">${staleNodes} nodo(s) con reporte atrasado (&gt;30s)</div>
+                        </div>
+                        <span class="badge ${heartbeatStatus}">${heartbeatStatus === "safe" ? "Safe" : "Warn"}</span>
+                    </div>
+                </div>
+                <div class="node-card">
+                    <div class="row">
+                        <div>
+                            <div class="title">Thermal Watch</div>
+                            <div class="sub">${hotNodes} nodo(s) con temperatura alta (&ge;42°C)</div>
+                        </div>
+                        <span class="badge ${thermalStatus}">${thermalStatus === "safe" ? "Safe" : "Warn"}</span>
                     </div>
                 </div>
             `;
@@ -734,6 +906,9 @@
             renderChart();
             renderAlerts();
             renderLogs();
+            if (openedNodeId) {
+                openNodeModal(openedNodeId);
+            }
         }
 
         async function init() {
@@ -769,6 +944,7 @@
                 if (!dot) return;
                 selectedNodeId = dot.dataset.nodeId;
                 renderAll();
+                openNodeModal(selectedNodeId);
             });
 
             servicesList.addEventListener("click", async (event) => {
@@ -778,6 +954,7 @@
                 if (card) {
                     selectedNodeId = card.dataset.nodeId;
                     renderAll();
+                    openNodeModal(selectedNodeId);
                 }
 
                 if (!button) return;
@@ -800,6 +977,17 @@
 
             window.addEventListener("resize", () => {
                 drawTopologyLines();
+            });
+            nodeModalClose.addEventListener("click", closeNodeModal);
+            nodeModalBackdrop.addEventListener("click", (event) => {
+                if (event.target === nodeModalBackdrop) {
+                    closeNodeModal();
+                }
+            });
+            window.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    closeNodeModal();
+                }
             });
         }
 

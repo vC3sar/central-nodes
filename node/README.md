@@ -17,7 +17,7 @@ Edita `node/config.json`:
 {
   "serverUrl": "http://localhost:3000",
   "heartbeatIntervalMs": 10000,
-  "termuxApiEnabled": true,
+  "termuxApiEnabled": "auto",
   "nodeId": "",
   "nodeName": "Mi Nodo",
   "nodeModel": "Generic Node",
@@ -33,7 +33,7 @@ También puedes sobrescribir desde variables de entorno:
 
 - `SERVER_URL` (default: valor de `config.json` o `http://localhost:3000`)
 - `HEARTBEAT_INTERVAL_MS` (default: `10000`)
-- `TERMUX_API_ENABLED` (default: `true`)
+- `TERMUX_API_ENABLED` (default: `auto`) valores: `auto`, `true`, `false`
 - `NODE_ID` (default: autogenerado)
 - `NODE_NAME` (default: hostname)
 - `NODE_MODEL` (default: plataforma del OS)
@@ -62,3 +62,5 @@ Si estás en Android/Termux y tienes `termux-api`, el cliente intentará usar:
 - `termux-telephony-deviceinfo` para mejorar `model` y `android`
 
 Si algún comando o permiso falla, el cliente sigue enviando heartbeat con fallback.
+
+En Windows/Linux/macOS, con `auto`, no intentará usar `termux-api` y seguirá enviando métricas compatibles.

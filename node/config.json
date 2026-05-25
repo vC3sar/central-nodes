@@ -1,9 +1,9 @@
 {
   "serverUrl": "http://192.168.1.68:3000",
   "heartbeatIntervalMs": 10000,
-  "termuxApiEnabled": true,
-  "nodeId": "X8B",
-  "nodeName": "X8B NODO 1",
-  "nodeModel": "X8B",
+  "termuxApiEnabled": "auto",
+  "nodeId": "V15",
+  "nodeName": "ASUS NODO 2",
+  "nodeModel": "W10",
   "nodeAndroid": "N/A"
 }

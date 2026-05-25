@@ -26,10 +26,16 @@ const NODE_ID = process.env.NODE_ID || config.nodeId || `node-${os.hostname()}-$
 const NODE_NAME = process.env.NODE_NAME || config.nodeName || os.hostname();
 const NODE_MODEL = process.env.NODE_MODEL || config.nodeModel || os.platform();
 const NODE_ANDROID = process.env.NODE_ANDROID || config.nodeAndroid || "N/A";
-const termuxFlagRaw = process.env.TERMUX_API_ENABLED ?? config.termuxApiEnabled ?? "true";
-const TERMUX_API_ENABLED = String(termuxFlagRaw).toLowerCase() !== "false";
+const termuxFlagRaw = process.env.TERMUX_API_ENABLED ?? config.termuxApiEnabled ?? "auto";
+const TERMUX_API_ENABLED = (() => {
+  const value = String(termuxFlagRaw).toLowerCase();
+  if (value === "true") return true;
+  if (value === "false") return false;
+  return process.platform === "android";
+})();
 
 let termuxAvailable = null;
+let prevCpuSample = null;
 
 function detectTermuxApi() {
   if (!TERMUX_API_ENABLED) {
@@ -93,9 +99,37 @@ function getLocalIp() {
 }
 
 function getCpuLoadPercent() {
-  const cores = os.cpus().length || 1;
-  const avg1m = os.loadavg()[0] || 0;
-  return Math.max(0, Math.min(100, Math.round((avg1m / cores) * 100)));
+  const cpus = os.cpus();
+  if (!cpus || cpus.length === 0) {
+    return 0;
+  }
+
+  const current = cpus.reduce(
+    (acc, cpu) => {
+      const times = cpu.times;
+      acc.idle += times.idle;
+      acc.total += times.user + times.nice + times.sys + times.irq + times.idle;
+      return acc;
+    },
+    { idle: 0, total: 0 },
+  );
+
+  if (!prevCpuSample) {
+    prevCpuSample = current;
+    const cores = cpus.length || 1;
+    const avg1m = os.loadavg()[0] || 0;
+    return Math.max(0, Math.min(100, Math.round((avg1m / cores) * 100)));
+  }
+
+  const idleDiff = current.idle - prevCpuSample.idle;
+  const totalDiff = current.total - prevCpuSample.total;
+  prevCpuSample = current;
+  if (totalDiff <= 0) {
+    return 0;
+  }
+
+  const usage = 100 * (1 - idleDiff / totalDiff);
+  return Math.max(0, Math.min(100, Math.round(usage)));
 }
 
 function buildHeartbeatPayload() {
